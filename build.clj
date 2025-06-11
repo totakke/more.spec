@@ -20,7 +20,12 @@
                 :class-dir class-dir
                 :lib lib
                 :version version
-                :src-dirs ["src"]})
+                :src-dirs ["src"]
+                :pom-data [[:url "https://github.com/totakke/more.spec"]
+                           [:licenses
+                            [:license
+                             [:name "The MIT License"]
+                             [:url "https://opensource.org/licenses/MIT"]]]]})
   (b/copy-dir {:src-dirs ["src"]
                :target-dir class-dir})
   (b/jar {:class-dir class-dir
