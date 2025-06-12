@@ -1,5 +1,7 @@
 # more.spec
 
+[![Clojars Project](https://img.shields.io/clojars/v/net.totakke/more.spec.svg)](https://clojars.org/net.totakke/more.spec)
+
 Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 
 ## Usage
@@ -47,6 +49,24 @@ Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 
 (s/valid? :greeting/hello "Hello, world!")
 ;;=> false
+```
+
+`valid?` in clojure.test:
+
+```clojure
+(require '[clojure.test :refer [deftest is]]
+         '[more.spec.alpha.test])
+
+(s/def :int/pos (s/and integer? pos?))
+
+(deftest int-pos-test
+  (is (valid? :int/pos -1)))
+
+(int-pos-test)
+;; FAIL in (int-pos-test)
+;; expected: (valid? :int/pos -1)
+;; actual: "-1 - failed: pos? spec: :int/pos\n"  ; spec failure is explained.
+;;=> nil
 ```
 
 ## License
