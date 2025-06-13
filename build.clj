@@ -20,6 +20,9 @@
                 :class-dir class-dir
                 :lib lib
                 :version version
+                :scm {:url "https://github.com/totakke/more.spec"
+                      :connection "scm:git:git://github.com/totakke/more.spec.git"
+                      :developerConnection "scm:git:ssh://git@github.com/totakke/more.spec.git"}
                 :src-dirs ["src"]
                 :pom-data [[:url "https://github.com/totakke/more.spec"]
                            [:licenses
