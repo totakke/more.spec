@@ -1,6 +1,7 @@
 # more.spec
 
 [![Clojars Project](https://img.shields.io/clojars/v/net.totakke/more.spec.svg)](https://clojars.org/net.totakke/more.spec)
+[![build](https://github.com/totakke/more.spec/actions/workflows/build.yml/badge.svg)](https://github.com/totakke/more.spec/actions/workflows/build.yml)
 
 Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 
