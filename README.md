@@ -5,6 +5,20 @@
 
 Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 
+## Installation
+
+Clojure CLI/deps.edn:
+
+```clojure
+net.totakke/more.spec {:mvn/version "0.2.9"}
+```
+
+Leiningen/Boot:
+
+```clojure
+[net.totakke/more.spec "0.2.9"]
+```
+
 ## Usage
 
 `only-keys`:
@@ -68,6 +82,29 @@ Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 ;; expected: (valid? :int/pos -1)
 ;; actual: "-1 - failed: pos? spec: :int/pos\n"  ; spec failure is explained.
 ;;=> nil
+```
+
+`:more.spec.alpha.specs/email`:
+
+```clojure
+(require '[clojure.spec.gen.alpha :as gen]
+         '[more.spec.alpha.specs :as mspecs])
+
+(s/valid? ::mspecs/email "test@example.com")
+;;=> true
+
+(gen/generate (s/gen ::mspecs/email))
+;;=> "di.i003glc@ehmipb.osed.org"
+```
+
+`:more.spec.alpha.specs/iso-local-date`:
+
+```clojure
+(s/valid? ::mspecs/iso-local-date "2025-06-11")
+;;=> true
+
+(gen/generate (s/gen ::mspecs/iso-local-date))
+;;=> "2017-12-07"
 ```
 
 ## License
