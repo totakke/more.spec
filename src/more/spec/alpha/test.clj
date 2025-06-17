@@ -1,5 +1,6 @@
 (ns more.spec.alpha.test
   (:require [clojure.spec.alpha :as s]
+            [clojure.string :as string]
             [clojure.test :as test]))
 
 (defmethod test/assert-expr 'valid?
@@ -13,4 +14,5 @@
        (test/do-report {:type :fail
                         :message ~msg
                         :expected '~form
-                        :actual (s/explain-str ~@args)}))))
+                        :actual (symbol (string/trim-newline
+                                         (s/explain-str ~@args)))}))))
