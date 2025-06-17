@@ -22,7 +22,8 @@
                 :version version
                 :scm {:url "https://github.com/totakke/more.spec"
                       :connection "scm:git:git://github.com/totakke/more.spec.git"
-                      :developerConnection "scm:git:ssh://git@github.com/totakke/more.spec.git"}
+                      :developerConnection "scm:git:ssh://git@github.com/totakke/more.spec.git"
+                      :tag (str "v" version)}
                 :src-dirs ["src"]
                 :pom-data [[:url "https://github.com/totakke/more.spec"]
                            [:licenses
@@ -32,7 +33,8 @@
   (b/copy-dir {:src-dirs ["src"]
                :target-dir class-dir})
   (b/jar {:class-dir class-dir
-          :jar-file jar-file}))
+          :jar-file jar-file})
+  (println "Built" jar-file))
 
 (defn install
   "Installs the JAR locally."
@@ -43,7 +45,9 @@
               :lib lib
               :version version
               :jar-file jar-file
-              :class-dir class-dir}))
+              :class-dir class-dir})
+  (println (format "Installed %s {:mvn/version \"%s\"} locally"
+                   lib version)))
 
 (defn deploy
   "Deploys the JAR to Clojars."
@@ -53,4 +57,6 @@
   (dd/deploy {:installer :remote
               :artifact (b/resolve-path jar-file)
               :pom-file (b/pom-path {:lib lib
-                                     :class-dir class-dir})}))
+                                     :class-dir class-dir})})
+  (println (format "Deployed %s {:mvn/version \"%s\"} to Clojars"
+                   lib version)))
