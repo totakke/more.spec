@@ -21,6 +21,8 @@ Leiningen/Boot:
 
 ## Usage
 
+### `more.spec.alpha`
+
 `only-keys`:
 
 ```clojure
@@ -66,6 +68,8 @@ Leiningen/Boot:
 ;;=> false
 ```
 
+### `more.spec.alpha.test`
+
 `valid?` in clojure.test:
 
 ```clojure
@@ -80,11 +84,13 @@ Leiningen/Boot:
 (int-pos-test)
 ;; FAIL in (int-pos-test)
 ;; expected: (valid? :int/pos -1)
-;; actual: "-1 - failed: pos? spec: :int/pos\n"  ; spec failure is explained.
+;; actual: -1 - failed: pos? spec: :int/pos  ; spec failure is explained.
 ;;=> nil
 ```
 
-`:more.spec.alpha.specs/email`:
+### `more.spec.alpha.specs`
+
+`::mspecs/email`:
 
 ```clojure
 (require '[clojure.spec.gen.alpha :as gen]
@@ -97,7 +103,7 @@ Leiningen/Boot:
 ;;=> "di.i003glc@ehmipb.osed.org"
 ```
 
-`:more.spec.alpha.specs/iso-local-date`:
+`::mspecs/iso-local-date`:
 
 ```clojure
 (s/valid? ::mspecs/iso-local-date "2025-06-11")

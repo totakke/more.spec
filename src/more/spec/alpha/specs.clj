@@ -1,4 +1,5 @@
 (ns more.spec.alpha.specs
+  "Predefined specs and generators which are popular in real production."
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [clojure.string :as string]
