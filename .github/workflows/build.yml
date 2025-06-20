@@ -32,4 +32,8 @@ jobs:
           restore-keys: cljdeps-
 
       - name: Run tests
-        run: clojure -X:test
+        run: |
+          clojure -X:1.9:test
+          clojure -X:1.10:test
+          clojure -X:1.11:test
+          clojure -X:1.12:test
