@@ -10,13 +10,13 @@ Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 Clojure CLI/deps.edn:
 
 ```clojure
-net.totakke/more.spec {:mvn/version "0.2.9"}
+net.totakke/more.spec {:mvn/version "0.2.15"}
 ```
 
 Leiningen/Boot:
 
 ```clojure
-[net.totakke/more.spec "0.2.9"]
+[net.totakke/more.spec "0.2.15"]
 ```
 
 ## Usage
