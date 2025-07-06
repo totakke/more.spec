@@ -29,6 +29,8 @@
     (is (valid? (ms/string) "foo"))
     (is (valid? (ms/string) ""))
     (is (valid? (ms/string) " "))
+    (is (valid? (ms/string :not-empty true) "foo"))
+    (is (valid? (ms/string :not-empty true) " "))
     (is (valid? (ms/string :not-blank true) "foo"))
     (is (valid? (ms/string :count 3) "foo"))
     (is (valid? (ms/string :min-count 1 :max-count 4) "foo"))
@@ -37,6 +39,7 @@
   (testing "invalid"
     (is (false? (s/valid? (ms/string) 1)))
     (is (false? (s/valid? (ms/string) nil)))
+    (is (false? (s/valid? (ms/string :not-empty true) "")))
     (is (false? (s/valid? (ms/string :not-blank true) "")))
     (is (false? (s/valid? (ms/string :not-blank true) " ")))
     (is (false? (s/valid? (ms/string :count 3) "foobar")))
