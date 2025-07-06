@@ -32,7 +32,7 @@
               (gen/elements sample-tlds))))
 
 (s/def ::email
-  (s/with-gen (ms/re-matches email-regex)
+  (s/with-gen (ms/string :match email-regex)
     (constantly email-gen)))
 
 ;; ISO-8601 local date, e.g., 2025-06-11
@@ -48,5 +48,5 @@
               (gen/choose 1 28))))
 
 (s/def ::iso-local-date
-  (s/with-gen (ms/re-matches iso-local-date-regex)
+  (s/with-gen (ms/string :match iso-local-date-regex)
     (constantly iso-local-date-gen)))
