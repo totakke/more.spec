@@ -27,14 +27,16 @@
 
   Takes several kwargs options that further constrain the string:
 
+  :not-empty - the string is not empty (default false)
   :not-blank - the string is not blank (default false)
   :count - specifies the string length exactly (default nil)
   :min-count, :max-count - range of the string length (<= min-count count max-count)
                            (defaults nil)
   :match - the string matches a regexp, using clojure.core/re-matches
            (default nil)"
-  [& {:keys [not-blank count min-count max-count match]}]
+  [& {:keys [not-empty not-blank count min-count max-count match]}]
   (let [xs (cond-> []
+             not-empty (conj `not-empty)
              not-blank (conj `(complement clojure.string/blank?))
              count (conj `#(= ~count (c/count %)))
              min-count (conj `#(<= ~min-count (c/count %)))
