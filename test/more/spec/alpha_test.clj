@@ -24,6 +24,25 @@
     (is (false? (s/valid? ::only-keys-map {::only-keys-key1 1
                                            ::only-keys-key2 2})))))
 
+(deftest string-test
+  (testing "valid"
+    (is (valid? (ms/string) "foo"))
+    (is (valid? (ms/string) ""))
+    (is (valid? (ms/string) " "))
+    (is (valid? (ms/string :not-blank true) "foo"))
+    (is (valid? (ms/string :count 3) "foo"))
+    (is (valid? (ms/string :min-count 1 :max-count 4) "foo"))
+    (is (valid? (ms/string :match #"[a-z]+") "foo")))
+
+  (testing "invalid"
+    (is (false? (s/valid? (ms/string) 1)))
+    (is (false? (s/valid? (ms/string) nil)))
+    (is (false? (s/valid? (ms/string :not-blank true) "")))
+    (is (false? (s/valid? (ms/string :not-blank true) " ")))
+    (is (false? (s/valid? (ms/string :count 3) "foobar")))
+    (is (false? (s/valid? (ms/string :min-count 1 :max-count 4) "foobar")))
+    (is (false? (s/valid? (ms/string :match #"[a-z]+") "123")))))
+
 (s/def ::re-find-spec (ms/re-find #"Hello"))
 
 (deftest re-find-test

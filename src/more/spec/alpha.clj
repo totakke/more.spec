@@ -1,7 +1,8 @@
 (ns more.spec.alpha
   "Provides just a bit more convenient functionality to clojure.spec."
-  (:refer-clojure :exclude [re-find re-matches])
-  (:require [clojure.spec.alpha :as s]))
+  (:refer-clojure :exclude [count re-find re-matches])
+  (:require [clojure.spec.alpha :as s]
+            [clojure.string]))
 
 (alias 'c 'clojure.core)
 
@@ -21,6 +22,26 @@
     `(s/and (s/keys ~@keys-args)
             (s/map-of ~key-set any?))))
 
+(defmacro string
+  "Returns a spec for a string.
+
+  Takes several kwargs options that further constrain the string:
+
+  :not-blank - the string is not blank (default false)
+  :count - specifies the string length exactly (default nil)
+  :min-count, :max-count - range of the string length (<= min-count count max-count)
+                           (defaults nil)
+  :match - the string matches a regexp, using clojure.core/re-matches
+           (default nil)"
+  [& {:keys [not-blank count min-count max-count match]}]
+  (let [xs (cond-> []
+             not-blank (conj `(complement clojure.string/blank?))
+             count (conj `#(= ~count (c/count %)))
+             min-count (conj `#(<= ~min-count (c/count %)))
+             max-count (conj `#(>= ~max-count (c/count %)))
+             match (conj `#(c/re-matches ~match %)))]
+    `(s/and string? ~@xs)))
+
 (defmacro re-find
   "Returns a spec that validates a string satisfying re regexp, using
   clojure.core/re-find."
@@ -31,4 +52,4 @@
   "Returns a spec that validates a string satisfying re regexp, using
   clojure.core/re-matches."
   [re]
-  `(s/and string? #(c/re-matches ~re %)))
+  `(string :match ~re))
