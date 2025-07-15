@@ -34,7 +34,8 @@
     (is (valid? (ms/string :not-blank true) "foo"))
     (is (valid? (ms/string :count 3) "foo"))
     (is (valid? (ms/string :min-count 1 :max-count 4) "foo"))
-    (is (valid? (ms/string :match #"[a-z]+") "foo")))
+    (is (valid? (ms/string :re #"[a-z]+") "foo"))
+    (is (valid? (ms/string :re #"[a-z]+") "foo 123")))
 
   (testing "invalid"
     (is (false? (s/valid? (ms/string) 1)))
@@ -44,7 +45,8 @@
     (is (false? (s/valid? (ms/string :not-blank true) " ")))
     (is (false? (s/valid? (ms/string :count 3) "foobar")))
     (is (false? (s/valid? (ms/string :min-count 1 :max-count 4) "foobar")))
-    (is (false? (s/valid? (ms/string :match #"[a-z]+") "123")))))
+    (is (false? (s/valid? (ms/string :re #"[a-z]+") "123")))
+    (is (false? (s/valid? (ms/string :re #"^[a-z]+$") "foo 123")))))
 
 (s/def ::re-find-spec (ms/re-find #"Hello"))
 
