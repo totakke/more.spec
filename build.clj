@@ -3,7 +3,7 @@
             [deps-deploy.deps-deploy :as dd]))
 
 (def lib 'net.totakke/more.spec)
-(def version (format "0.2.%s" (b/git-count-revs nil)))
+(def version (format "0.3.%s" (b/git-count-revs nil)))
 (def basis (b/create-basis {:project "deps.edn"}))
 (def class-dir "target/classes")
 (def jar-file (format "target/%s-%s.jar" (name lib) version))
