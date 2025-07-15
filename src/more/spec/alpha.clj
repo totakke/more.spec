@@ -32,26 +32,25 @@
   :count - specifies the string length exactly (default nil)
   :min-count, :max-count - range of the string length (<= min-count count max-count)
                            (defaults nil)
-  :match - the string matches a regexp, using clojure.core/re-matches
-           (default nil)"
-  [& {:keys [not-empty not-blank count min-count max-count match]}]
+  :re - the string matches a regexp, using clojure.core/re-find (default nil)"
+  [& {:keys [not-empty not-blank count min-count max-count re]}]
   (let [xs (cond-> []
              not-empty (conj `not-empty)
              not-blank (conj `(complement clojure.string/blank?))
              count (conj `#(= ~count (c/count %)))
              min-count (conj `#(<= ~min-count (c/count %)))
              max-count (conj `#(>= ~max-count (c/count %)))
-             match (conj `#(c/re-matches ~match %)))]
+             re (conj `#(c/re-find ~re %)))]
     `(s/and string? ~@xs)))
 
 (defmacro re-find
   "Returns a spec that validates a string satisfying re regexp, using
   clojure.core/re-find."
   [re]
-  `(s/and string? #(c/re-find ~re %)))
+  `(string :re ~re))
 
 (defmacro re-matches
   "Returns a spec that validates a string satisfying re regexp, using
   clojure.core/re-matches."
   [re]
-  `(string :match ~re))
+  `(s/and string? #(c/re-matches ~re %)))

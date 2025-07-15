@@ -7,7 +7,7 @@
 
 ;; Email, e.g., test@example.com
 
-(def email-regex #"[\w-\.]+@([\w-]+\.)+[\w-]{2,12}")
+(def email-regex #"^[\w-\.]+@([\w-]+\.)+[\w-]{2,12}$")
 
 (def ^:private email-char-gen
   (gen/fmap char (gen/frequency [[1 (gen/return 45)]
@@ -32,12 +32,12 @@
               (gen/elements sample-tlds))))
 
 (s/def ::email
-  (s/with-gen (ms/string :match email-regex)
+  (s/with-gen (ms/string :re email-regex)
     (constantly email-gen)))
 
 ;; ISO-8601 local date, e.g., 2025-06-11
 
-(def iso-local-date-regex #"\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])")
+(def iso-local-date-regex #"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$")
 
 (def iso-local-date-gen
   (gen/fmap
@@ -48,5 +48,5 @@
               (gen/choose 1 28))))
 
 (s/def ::iso-local-date
-  (s/with-gen (ms/string :match iso-local-date-regex)
+  (s/with-gen (ms/string :re iso-local-date-regex)
     (constantly iso-local-date-gen)))
