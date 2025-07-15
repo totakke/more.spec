@@ -10,13 +10,13 @@ Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 Clojure CLI/deps.edn:
 
 ```clojure
-net.totakke/more.spec {:mvn/version "0.2.15"}
+net.totakke/more.spec {:mvn/version "0.3.23"}
 ```
 
 Leiningen/Boot:
 
 ```clojure
-[net.totakke/more.spec "0.2.15"]
+[net.totakke/more.spec "0.3.23"]
 ```
 
 ## Usage
@@ -42,6 +42,22 @@ Leiningen/Boot:
    :acct/last-name "Bunny"
    :acct/email "test@example.com"}) ; :acct/email is not defined.
 ;;=> false
+```
+
+`string`:
+
+```clojure
+(s/valid? (ms/string) "foo")
+;;=> true
+
+(s/valid? (ms/string :not-blank true) " ")
+;;=> false
+
+(s/valid? (ms/string :min-count 2 :max-count 4) "foobar")
+;;=> false
+
+(s/valid? (ms/string :re #"o+b") "foobar")
+;;=> true
 ```
 
 `re-find`:
