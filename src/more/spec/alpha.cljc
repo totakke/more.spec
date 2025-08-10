@@ -1,10 +1,11 @@
 (ns more.spec.alpha
   "Provides just a bit more convenient functionality to clojure.spec."
   (:refer-clojure :exclude [count re-find re-matches])
-  (:require [clojure.spec.alpha :as s]
+  (:require #?(:cljs [cljs.core :as c])
+            [clojure.spec.alpha :as s]
             [clojure.string]))
 
-(alias 'c 'clojure.core)
+#?(:clj (alias 'c 'clojure.core))
 
 (defn- unqualify-keyword
   [key]

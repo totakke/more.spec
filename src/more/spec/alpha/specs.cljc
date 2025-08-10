@@ -3,7 +3,9 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [clojure.string :as string]
-            [more.spec.alpha :as ms]))
+            #?@(:cljs [[goog.string :refer [format]]
+                       [goog.string.format]])
+            [more.spec.alpha :as ms :include-macros true]))
 
 ;; Email, e.g., test@example.com
 

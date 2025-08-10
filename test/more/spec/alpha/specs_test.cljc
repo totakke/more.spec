@@ -3,11 +3,10 @@
             [clojure.test :refer [are deftest is]]
             [clojure.test.check :as tc]
             [clojure.test.check.properties :as prop]
-            [more.spec.alpha.specs :as specs]
-            [more.spec.alpha.test]))
+            [more.spec.alpha.specs :as specs]))
 
 (deftest email-test
-  (are [email] (valid? ::specs/email email)
+  (are [email] (true? (s/valid? ::specs/email email))
     "test@example.com"
     "test.dots@example.com"
     "TEST@EXAMPLE.COM"
@@ -22,7 +21,7 @@
                                  (string? x))))))
 
 (deftest iso-local-date-test
-  (are [date] (valid? ::specs/iso-local-date date)
+  (are [date] (true? (s/valid? ::specs/iso-local-date date))
     "1970-01-01"
     "2025-06-10"
     "2025-12-31")
