@@ -1,8 +1,7 @@
 (ns more.spec.alpha-test
   (:require [clojure.spec.alpha :as s]
             [clojure.test :refer [deftest is testing]]
-            [more.spec.alpha :as ms]
-            [more.spec.alpha.test]))
+            [more.spec.alpha :as ms :include-macros true]))
 
 (s/def ::only-keys-map (ms/only-keys :req [::only-keys-key1]
                                      :opt [::only-keys-key2]))
@@ -12,9 +11,9 @@
 
 (deftest only-keys-test
   (testing "valid"
-    (is (valid? ::only-keys-map {::only-keys-key1 "1"
-                                 ::only-keys-key2 2}))
-    (is (valid? ::only-keys-map {::only-keys-key1 "1"})))
+    (is (true? (s/valid? ::only-keys-map {::only-keys-key1 "1"
+                                          ::only-keys-key2 2})))
+    (is (true? (s/valid? ::only-keys-map {::only-keys-key1 "1"}))))
 
   (testing "invalid"
     (is (false? (s/valid? ::only-keys-map {::only-keys-key1 "1"
@@ -26,16 +25,16 @@
 
 (deftest string-test
   (testing "valid"
-    (is (valid? (ms/string) "foo"))
-    (is (valid? (ms/string) ""))
-    (is (valid? (ms/string) " "))
-    (is (valid? (ms/string :not-empty true) "foo"))
-    (is (valid? (ms/string :not-empty true) " "))
-    (is (valid? (ms/string :not-blank true) "foo"))
-    (is (valid? (ms/string :count 3) "foo"))
-    (is (valid? (ms/string :min-count 1 :max-count 4) "foo"))
-    (is (valid? (ms/string :re #"[a-z]+") "foo"))
-    (is (valid? (ms/string :re #"[a-z]+") "foo 123")))
+    (is (true? (s/valid? (ms/string) "foo")))
+    (is (true? (s/valid? (ms/string) "")))
+    (is (true? (s/valid? (ms/string) " ")))
+    (is (true? (s/valid? (ms/string :not-empty true) "foo")))
+    (is (true? (s/valid? (ms/string :not-empty true) " ")))
+    (is (true? (s/valid? (ms/string :not-blank true) "foo")))
+    (is (true? (s/valid? (ms/string :count 3) "foo")))
+    (is (true? (s/valid? (ms/string :min-count 1 :max-count 4) "foo")))
+    (is (true? (s/valid? (ms/string :re #"[a-z]+") "foo")))
+    (is (true? (s/valid? (ms/string :re #"[a-z]+") "foo 123"))))
 
   (testing "invalid"
     (is (false? (s/valid? (ms/string) 1)))
@@ -52,8 +51,8 @@
 
 (deftest re-find-test
   (testing "valid"
-    (is (valid? ::re-find-spec "Hello"))
-    (is (valid? ::re-find-spec "Hello, world!")))
+    (is (true? (s/valid? ::re-find-spec "Hello")))
+    (is (true? (s/valid? ::re-find-spec "Hello, world!"))))
 
   (testing "invalid"
     (is (false? (s/valid? ::re-find-spec "Goodbye, world!")))
@@ -63,7 +62,7 @@
 
 (deftest re-matches-test
   (testing "valid"
-    (is (valid? ::re-matches-spec "Hello")))
+    (is (true? (s/valid? ::re-matches-spec "Hello"))))
 
   (testing "invalid"
     (is (false? (s/valid? ::re-matches-spec "Hello, world!")))
