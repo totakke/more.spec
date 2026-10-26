@@ -1,7 +1,7 @@
 (ns more.spec.alpha-test
   (:require [clojure.spec.alpha :as s]
             [clojure.test :refer [deftest is testing]]
-            [more.spec.alpha :as ms :include-macros true]))
+            [more.spec.alpha :as ms]))
 
 (s/def ::only-keys-map (ms/only-keys :req [::only-keys-key1]
                                      :opt [::only-keys-key2]))

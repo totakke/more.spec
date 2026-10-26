@@ -3,7 +3,8 @@
   (:refer-clojure :exclude [count re-find re-matches])
   (:require #?(:cljs [cljs.core :as c])
             [clojure.spec.alpha :as s]
-            [clojure.string]))
+            [clojure.string])
+  #?(:cljs (:require-macros [more.spec.alpha])))
 
 #?(:clj (alias 'c 'clojure.core))
 

@@ -5,7 +5,7 @@
             [clojure.string :as string]
             #?@(:cljs [[goog.string :refer [format]]
                        [goog.string.format]])
-            [more.spec.alpha :as ms :include-macros true]))
+            [more.spec.alpha :as ms]))
 
 ;; Email, e.g., test@example.com
 
