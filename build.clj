@@ -25,12 +25,13 @@
                       :developerConnection "scm:git:ssh://git@github.com/totakke/more.spec.git"
                       :tag (str "v" version)}
                 :src-dirs ["src"]
+                :resource-dirs ["resources"]
                 :pom-data [[:url "https://github.com/totakke/more.spec"]
                            [:licenses
                             [:license
                              [:name "The MIT License"]
                              [:url "https://opensource.org/licenses/MIT"]]]]})
-  (b/copy-dir {:src-dirs ["src"]
+  (b/copy-dir {:src-dirs ["src" "resources"]
                :target-dir class-dir})
   (b/jar {:class-dir class-dir
           :jar-file jar-file})
