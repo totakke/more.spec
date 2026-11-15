@@ -12,17 +12,23 @@
   [key]
   (keyword (name key)))
 
+(defn- flatten-keys
+  "Extracts keys from a clojure.spec.alpha/keys argument, which may contain
+  (or ...) and (and ...) forms."
+  [ks]
+  (mapcat #(if (seq? %) (flatten-keys (rest %)) [%]) ks))
+
 (defmacro only-keys
   "Takes the same arguments as clojure.spec.alpha/keys and creates a map
   validating spec. However, the spec disallows undefined keys."
   [& {:keys [req req-un opt opt-un] :as m}]
   (let [keys-args (apply concat m)
-        key-set (set (concat req
-                             (map unqualify-keyword req-un)
+        key-set (set (concat (flatten-keys req)
+                             (map unqualify-keyword (flatten-keys req-un))
                              opt
                              (map unqualify-keyword opt-un)))]
     `(s/and (s/keys ~@keys-args)
-            (s/map-of ~key-set any?))))
+            (s/map-of #(contains? ~key-set %) any?))))
 
 (defmacro string
   "Returns a spec for a string.
