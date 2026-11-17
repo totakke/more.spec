@@ -129,6 +129,51 @@ Leiningen/Boot:
 ;;=> "2017-12-07"
 ```
 
+`::mspecs/http-status`:
+
+```clojure
+(s/valid? ::mspecs/http-status 404)
+;;=> true
+
+(s/valid? ::mspecs/http-status 600)
+;;=> false
+```
+
+`::mspecs/uri-reference`, `::mspecs/uri-reference-string`, `::mspecs/uri-object`:
+
+```clojure
+;; ::uri-reference accepts both a string and a URI object
+(s/valid? ::mspecs/uri-reference "https://example.com/path")
+;;=> true
+
+(s/valid? ::mspecs/uri-reference (java.net.URI. "/path")) ; goog.Uri in cljs
+;;=> true
+
+;; ::uri-reference-string accepts only a string satisfying RFC 3986
+(s/valid? ::mspecs/uri-reference-string "https://example.com/has space")
+;;=> false
+
+;; ::uri-object accepts only java.net.URI (clj) or goog.Uri (cljs)
+(s/valid? ::mspecs/uri-object "https://example.com")
+;;=> false
+```
+
+`::mspecs/problem-details` (Problem Details for HTTP APIs, [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457)):
+
+```clojure
+(s/valid? ::mspecs/problem-details
+  {:type "https://example.com/probs/out-of-credit"
+   :title "You do not have enough credit."
+   :status 403
+   :detail "Your current balance is 30, but that costs 50."
+   :instance "/account/12345/msgs/abc"
+   :balance 30}) ; extension members are allowed.
+;;=> true
+
+(s/valid? ::mspecs/problem-details {:status "403"})
+;;=> false
+```
+
 ## License
 
 Copyright 2025 [Toshiki Takeuchi](https://totakke.net/)
