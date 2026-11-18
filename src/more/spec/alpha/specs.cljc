@@ -8,41 +8,48 @@
             [more.spec.alpha :as ms])
   #?(:cljs (:import [goog Uri])))
 
+;; Generators are built lazily so that test.check is required only when
+;; generating values.
+
 ;; Email, e.g., test@example.com
 
 (def email-regex #"^[\w-\.]+@([\w-]+\.)+[\w-]{2,12}$")
 
-(def ^:private email-char-gen
+(defn- email-char-gen []
   (gen/fmap char (gen/frequency [[1 (gen/return 45)]
                                  [3 (gen/choose 48 57)]
                                  [1 (gen/return 95)]
                                  [20 (gen/choose 97 122)]])))
 
-(def ^:private email-string-gen
+(defn- email-string-gen []
   (gen/such-that #(re-matches #"[a-z].*[0-9a-z]" %)
-                 (gen/fmap string/join (gen/vector email-char-gen 2 10))))
+                 (gen/fmap string/join (gen/vector (email-char-gen) 2 10))))
 
 (def ^:private sample-tlds
   ["biz" "ca" "cn" "com" "de" "dev" "edu" "fr" "gov" "info" "international" "jp"
    "kr" "museum" "net" "org" "site" "uk" "us"])
 
-(def email-gen
+(defn email-gen
+  "Returns a generator of email addresses."
+  []
   (gen/fmap
    (fn [[user sd tld]]
      (string/lower-case (format "%s@%s.%s" user sd tld)))
-   (gen/tuple (gen/fmap #(string/join "." %) (gen/vector email-string-gen 1 2))
-              (gen/fmap #(string/join "." %) (gen/vector email-string-gen 1 3))
+   (gen/tuple (gen/fmap #(string/join "." %) (gen/vector (email-string-gen) 1 2))
+              (gen/fmap #(string/join "." %) (gen/vector (email-string-gen) 1 3))
               (gen/elements sample-tlds))))
 
 (s/def ::email
   (s/with-gen (ms/string :re email-regex)
-    (constantly email-gen)))
+    email-gen))
 
 ;; ISO-8601 local date, e.g., 2025-06-11
 
 (def iso-local-date-regex #"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$")
 
-(def iso-local-date-gen
+(defn iso-local-date-gen
+  "Returns a generator of ISO-8601 local date strings."
+  []
   (gen/fmap
    (fn [[year month day]]
      (format "%04d-%02d-%02d" year month day))
@@ -52,7 +59,7 @@
 
 (s/def ::iso-local-date
   (s/with-gen (ms/string :re iso-local-date-regex)
-    (constantly iso-local-date-gen)))
+    iso-local-date-gen))
 
 ;; HTTP status code (RFC 9110), e.g., 404
 
@@ -66,9 +73,6 @@
 
 (def uri-reference-regex
   #"^(?:[A-Za-z][A-Za-z0-9+.\-]*:|(?![^/?#]*:))(?:[A-Za-z0-9\-._~!$&'()*+,;=:@/\[\]]|%[0-9A-Fa-f]{2})*(?:\?(?:[A-Za-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9A-Fa-f]{2})*)?(?:#(?:[A-Za-z0-9\-._~!$&'()*+,;=:@/?]|%[0-9A-Fa-f]{2})*)?$")
-
-;; Generators are built lazily so that test.check is required only when
-;; generating values.
 
 ;; Host label (RFC 1123), e.g., example
 (defn- uri-host-label-char-gen []
