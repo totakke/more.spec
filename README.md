@@ -10,18 +10,21 @@ Just a bit more convenience with [clojure.spec](https://clojure.org/about/spec)
 Clojure CLI/deps.edn:
 
 ```clojure
-net.totakke/more.spec {:mvn/version "0.3.32"}
+net.totakke/more.spec {:mvn/version "0.4.43"}
 ```
 
 Leiningen/Boot:
 
 ```clojure
-[net.totakke/more.spec "0.3.32"]
+[net.totakke/more.spec "0.4.43"]
 ```
 
 ## Usage
 
 ### `more.spec.alpha`
+
+Spec-creating macros that complement `clojure.spec.alpha` for common validation
+patterns.
 
 `only-keys`:
 
@@ -86,6 +89,8 @@ Leiningen/Boot:
 
 ### `more.spec.alpha.test`
 
+Integration with `clojure.test` that explains spec failures in test reports.
+
 `valid?` in clojure.test:
 
 ```clojure
@@ -105,6 +110,9 @@ Leiningen/Boot:
 ```
 
 ### `more.spec.alpha.specs`
+
+Predefined specs and generators for values commonly used in real-world
+applications.
 
 `::mspecs/email`:
 
